@@ -52,43 +52,43 @@ public class AddressAdapter extends RecyclerView.Adapter {
 //        ((MyViewHolder) holder).explanation.setText(m.getToDos()[po sition].getExplanation());
 
 
-//        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(final View v) {
-//
-//
-//                AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
-//
-//                alertDialog.setTitle("Delete");
-//
-//                alertDialog.setMessage("Are you sure you want delete this ?");
-//
-//
-//                alertDialog.setPositiveButton("delete", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                        m.deleteTodo(position);
-//                        // m.getToDos().remove(m.getToDos().get(positio));
-//                        //m.deleteTodo(m.getToDos().get(position));
-//                        notifyDataSetChanged();
-//                        Toast.makeText(v.getContext(), "Selected todo deleted", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//
-//
-//                alertDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                        Toast.makeText(v.getContext(), "You clicked on cancel", Toast.LENGTH_SHORT).show();
-//                        // dialog.cancel();
-//                    }
-//                });
-//
-//                alertDialog.show();
-//
-//                return false;
-//            }
-//        });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(final View v) {
+
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
+
+                alertDialog.setTitle("Delete");
+
+                alertDialog.setMessage("Are you sure you want delete this address?");
+
+
+                alertDialog.setPositiveButton("delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        m.deleteAddress(position);
+                        // m.getToDos().remove(m.getToDos().get(positio));
+                        //m.deleteTodo(m.getToDos().get(position));
+                        notifyDataSetChanged();
+                        Toast.makeText(v.getContext(), "Selected address deleted", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+                alertDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Toast.makeText(v.getContext(), "You clicked on cancel", Toast.LENGTH_SHORT).show();
+                        // dialog.cancel();
+                    }
+                });
+
+                alertDialog.show();
+
+                return false;
+            }
+        });
 
 //        holder.itemView.setOnClickListener(new View.OnClickListener() {
 //            @Override

@@ -21,7 +21,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String INTO = "INTO ";
     public static final String  SELECT = "SELECT ";
     public static final String FROM = "FROM ";
-    public static final String STAR = "*";
+    public static final String STAR = "* ";
+    public static final String WHERE = "WHERE ";
+    public static final String EQUAL = "= ";
+    public static final String DELETE = "DELETE ";
     public static final String VALUES = "VALUES ";
     public static final String AUTO_INCREMENT = "AUTOINCREMENT ";
     public static final String PRIMARY_KEY = "PRIMARY KEY ";
@@ -61,6 +64,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + ADDRESSES_TABLE);
+        onCreate(db);
 
     }
 
@@ -77,7 +82,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Address> getAllAddresses() {
-        String q = SELECT + STAR + FROM + ADDRESSES_TABLE;
+        String q = SELECT + STAR + FROM + ADDRESSES_TABLE + SEMI_COLON;
         Cursor c = getReadableDatabase().rawQuery(q, null);
        c.moveToFirst();
         ArrayList<Address>  a = new ArrayList<>();
@@ -90,6 +95,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void deleteAddress(int position) {
+    public String getAddress(String id){
+        String q = SELECT + COLUMN_ADDRESS + FROM + ADDRESSES_TABLE + WHERE + COLUMN_ADDRESS_ID + EQUAL + "\"" + id + "\"" + SEMI_COLON ;
+        Cursor c = getReadableDatabase().rawQuery(q, null);
+        c.moveToFirst();
+        return c.getString(0);
+    }
+
+    public void deleteAddress(String id) {
+        String q = DELETE + FROM + ADDRESSES_TABLE + WHERE + COLUMN_ADDRESS_ID + EQUAL  + "\"" +  id + "\"" + SEMI_COLON ;
+        getWritableDatabase().execSQL(q);
+
+
     }
 }

@@ -34,9 +34,10 @@ public class AddressManager {
     //        toDos.remove(todo);
     //    }
     public void deleteAddress(int position) {
+        dbHelper.deleteAddress(getAddresses().get(position).getId());
         addresses.remove(position);
-        dbHelper.deleteAddress(position);
 
+        //dbHelper.deleteAddress(position);
     }
 
     public ArrayList<Address> getAddresses() {
