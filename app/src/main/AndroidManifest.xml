@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreatAddressActivity"></activity>
+        <activity android:name=".SettingActivity"></activity>
     </application>
 
 </manifest>

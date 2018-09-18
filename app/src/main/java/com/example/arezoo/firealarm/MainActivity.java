@@ -3,6 +3,7 @@ package com.example.arezoo.firealarm;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.CharArrayBuffer;
 import android.database.ContentObserver;
 import android.database.Cursor;
@@ -18,6 +19,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,10 +34,12 @@ public class MainActivity extends AppCompatActivity {
     private Button fire_button;
     private Button ok_button;
     private TextView emptyText;
+    private ImageButton setting_button;
     MediaPlayer mMediaPlayer;
-    private AddressManager manager;
     View contentView;
     Dialog d;
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
+    int check;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +47,15 @@ public class MainActivity extends AppCompatActivity {
         contentView = LayoutInflater.from(MainActivity.this).inflate(R.layout.activity_fire_detect, null, false);
         setContentView(R.layout.activity_fire_alarm);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        add_button = (Button) findViewById(R.id.add_todo_button);
+        add_button = (Button) findViewById(R.id.add_address_button);
         fire_button = (Button) findViewById(R.id.fire_button);
         emptyText = (TextView) findViewById(R.id.empty_text);
         ok_button = (Button)contentView.findViewById(R.id.ok_button);
+        setting_button = (ImageButton) findViewById(R.id.setting_button);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new AddressAdapter(this);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-        manager = AddressManager.getInstance(this);
         recyclerView.setAdapter(adapter);
         if (adapter.getItemCount() > 0)
             emptyText.setVisibility(View.GONE);
@@ -79,10 +83,29 @@ public class MainActivity extends AppCompatActivity {
                 t.setText(db.getAddress(fired_id));
                 d.show();
 
+                SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+                check = prefs.getInt("checkedSound", 0);
+
+                if (check == 1)
                 mMediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.sound1);
+                else if (check == 2)
+                    mMediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.sound2);
+                else if (check == 3)
+                    mMediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.sound3);
+
                 mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 mMediaPlayer.setLooping(true);
                 mMediaPlayer.start();
+            }
+        });
+
+
+        setting_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent myIntent = new Intent(MainActivity.this, SettingActivity.class);
+                MainActivity.this.startActivity(myIntent);
             }
         });
 

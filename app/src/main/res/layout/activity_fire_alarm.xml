@@ -11,7 +11,7 @@
         android:gravity="center"
         android:textColor="#0a0a0a"
         android:textSize="25dp"
-        android:text="there is no address, press the below button to add address" />
+        android:text="there is no address, press the add address button if you want to add address" />
 
 
     <android.support.v7.widget.RecyclerView
@@ -22,19 +22,42 @@
         android:scrollbars="vertical">
 
     </android.support.v7.widget.RecyclerView>
-<Button
-    android:id="@+id/fire_button"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="fire detected"
-    android:textSize="25sp" />
 
-    <Button
-        android:id="@+id/add_todo_button"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="add address"
-        android:textSize="25dp" />
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/setting_button"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:src="@drawable/download" />
+
+        <Button
+            android:id="@+id/fire_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="fire detected"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/add_address_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="add address"
+            android:textSize="20dp" />
+
+
+
+
+    </LinearLayout>
+
 
 
 </LinearLayout>
