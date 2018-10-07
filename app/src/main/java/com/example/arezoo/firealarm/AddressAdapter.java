@@ -3,24 +3,16 @@ package com.example.arezoo.firealarm;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.arezoo.firealarm.Data.Address;
 import com.example.arezoo.firealarm.Data.AddressManager;
-
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 /**
  * Created by Arezoo on 07-Sep-18.
@@ -90,11 +82,17 @@ public class AddressAdapter extends RecyclerView.Adapter {
             }
         });
 
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(final View v) {
-//
-//
+
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+
+                Intent myIntent = new Intent(v.getContext(), ReportActivity.class);
+                v.getContext().startActivity(myIntent);
+
+
 //                AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
 //
 //                alertDialog.setTitle("Edit");
@@ -124,13 +122,22 @@ public class AddressAdapter extends RecyclerView.Adapter {
 //                });
 //
 //                alertDialog.show();
-//
-//
-//            }
-//        });
-//
+
+
+            }
+        });
+
+
+
+
+
+
 
     }
+
+
+
+
 
     @Override
     public int getItemCount() {
