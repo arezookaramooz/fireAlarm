@@ -15,7 +15,7 @@ public class AddressManager {
     private ArrayList<Address> addresses = new ArrayList();
 
     private AddressManager(Context context) {
-        dbHelper = new DataBaseHelper(context, "myDatabase", null, 1);
+        dbHelper = DataBaseHelper.getInstance(context);
         addresses.addAll(dbHelper.getAllAddresses());
     }
 
@@ -33,11 +33,13 @@ public class AddressManager {
     //    public void deleteTodo (ToDo todo){
     //        toDos.remove(todo);
     //    }
-    public void deleteAddress(int position) {
+    public void deleteAddressAndReports(int position) {
         dbHelper.deleteAddress(getAddresses().get(position).getId());
+        dbHelper.deleteReports(getAddresses().get(position).getId());
         addresses.remove(position);
 
-        //dbHelper.deleteAddress(position);
+
+        //dbHelper.deleteAddressAndReports(position);
     }
 
     public ArrayList<Address> getAddresses() {

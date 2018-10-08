@@ -24,36 +24,47 @@ import rest.bef.BefrestPushReceiver;
 public class PushReceiver extends BefrestPushReceiver {
     private static final String TAG = "PushReceiver";
     DataBaseHelper dbHelper;
+
     @Override
     public void onPushReceived(Context context, BefrestMessage[] messages) {
-        int id = 0;
-        int smoke = 0;
-        int co = 0;
-//        int time = 0;
-        Log.d(TAG, "push is:" + messages[0].getData());
+        boolean fireDetected = false;
+        int firedID = 0;
+        int firedIndex = 0;
+        dbHelper = DataBaseHelper.getInstance(context);
+        for (int i = 0; i < messages.length; i++) {
+            Log.d(TAG, "push is:" + messages[i].getData());
+            int id = 0;
+            int smoke = 0;
+            int co = 0;
+            long time = 0;
+            try {
+                JSONObject jsonObject = new JSONObject(messages[i].getData());
+                id = jsonObject.getInt("id");
+                smoke = jsonObject.getInt("smoke");
+                co = jsonObject.getInt("co");
+//            time = jsonObject.getLong("time");
+                time = System.currentTimeMillis();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-        try {
-            JSONObject jsonObject = new JSONObject(messages[0].getData());
-            id = jsonObject.getInt("id");
-            smoke = jsonObject.getInt("smoke");
-            co = jsonObject.getInt("co");
-//            time = jsonObject.getInt("time");
-        } catch (JSONException e) {
-            e.printStackTrace();
+            if (dbHelper.getAddress("" + id) != null) {
+                dbHelper.insertRowToReport(time, id, co, smoke);
+                if (co > 250 && smoke > 250) {
+                    fireDetected = true;
+                    firedID = id;
+                    firedIndex = i;
+                }
+            } else {
+                Log.d(TAG, "onPushReceived: address id invalid " + id);
+            }
         }
-        Log.d(TAG, "parsed values are:" + id + "" + smoke + "" +co);
 
-        dbHelper = new DataBaseHelper(context, "myDatabase", null, 1);
-        Long time = System.currentTimeMillis();
-        Log.d("TAG", "time is:" + time);
-        dbHelper.insertRowToReport(time, id, co, smoke);
-
-        if (smoke > 200 && co > 200) {
+        if (fireDetected) {
             Intent myIntent = new Intent(context, MainActivity.class);
-            myIntent.putExtra("pushData", messages[0].getData());
-            myIntent.putExtra("firedId", id);
+            myIntent.putExtra("pushData", messages[firedIndex].getData());
+            myIntent.putExtra("firedId", firedID);
             context.startActivity(myIntent);
         }
-
     }
 }

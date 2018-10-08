@@ -38,11 +38,7 @@ public class AddressAdapter extends RecyclerView.Adapter {
         final Address address = m.getAddresses().get(position);
 
         ((MyViewHolder) holder).id.setText(address.getId());
-//        ((MyViewHolder) holder).subject.setText(m.getToDos()[position].getSubject());
-
         ((MyViewHolder) holder).address.setText(address.getAddress());
-//        ((MyViewHolder) holder).explanation.setText(m.getToDos()[po sition].getExplanation());
-
 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -59,9 +55,7 @@ public class AddressAdapter extends RecyclerView.Adapter {
                 alertDialog.setPositiveButton("delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        m.deleteAddress(position);
-                        // m.getToDos().remove(m.getToDos().get(positio));
-                        //m.deleteTodo(m.getToDos().get(position));
+                        m.deleteAddressAndReports(position);
                         notifyDataSetChanged();
                         Toast.makeText(v.getContext(), "Selected address deleted", Toast.LENGTH_SHORT).show();
                     }
@@ -72,7 +66,6 @@ public class AddressAdapter extends RecyclerView.Adapter {
                     public void onClick(DialogInterface dialog, int which) {
 
                         Toast.makeText(v.getContext(), "You clicked on cancel", Toast.LENGTH_SHORT).show();
-                        // dialog.cancel();
                     }
                 });
 
@@ -82,63 +75,17 @@ public class AddressAdapter extends RecyclerView.Adapter {
             }
         });
 
-
-
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
 
                 Intent myIntent = new Intent(v.getContext(), ReportActivity.class);
+                String id = address.getId();
+                myIntent.putExtra("addressID", id);
                 v.getContext().startActivity(myIntent);
-
-
-//                AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
-//
-//                alertDialog.setTitle("Edit");
-//
-//               alertDialog.setMessage("do you want to edit this todo?");
-//
-//
-//                alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                        Intent myIntent = new Intent(v.getContext(), CreatToDoActivity.class);
-//                        myIntent.putExtra("key", "editKey");
-//                        myIntent.putExtra("position", String.valueOf(position));
-//                        v.getContext().startActivity(myIntent);
-//
-//                        notifyDataSetChanged();
-//                    }
-//                });
-//
-//
-//                alertDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                        Toast.makeText(v.getContext(), "You clicked on cancel", Toast.LENGTH_SHORT).show();
-//                        // dialog.cancel();
-//                    }
-//                });
-//
-//                alertDialog.show();
-
-
             }
         });
-
-
-
-
-
-
-
     }
-
-
-
-
-
     @Override
     public int getItemCount() {
 //        return m.getToDos().length;

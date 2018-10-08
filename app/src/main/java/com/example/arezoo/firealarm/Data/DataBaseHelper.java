@@ -55,10 +55,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String SEMI_COLON = "; ";
     private static final String TAG = "DatabaseHelper ";
 
-    int id = 1;
 
     public DataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
+    }
+
+    public static DataBaseHelper getInstance(Context context) {
+        DataBaseHelper myDatabase = new DataBaseHelper(context, "myDatabase", null, 2);
+        return myDatabase;
     }
 
     @Override
@@ -70,7 +74,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + PARENTHESIS_CLOSE + SEMI_COLON;
         Log.d(TAG, "onCreate: query=" + q);
         db.execSQL(q);
-
 
         String s = CREATE + TABLE + REPORT_TABLE + PARENTHESIS_OPEN
 //                + COLUMN_ID + DATA_TYPE_INTEGER + PRIMARY_KEY + AUTO_INCREMENT + COMMA
@@ -86,8 +89,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + ADDRESSES_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + REPORT_TABLE);
         onCreate(db);
-
     }
 
     public void insertAddress(Address address) {
@@ -115,7 +118,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + "\"" + smoke + "\""
                 + PARENTHESIS_CLOSE + SEMI_COLON;
         getWritableDatabase().execSQL(i);
-
     }
 
 
@@ -136,8 +138,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public String getAddress(String id) {
         String q = SELECT + COLUMN_ADDRESS + FROM + ADDRESSES_TABLE + WHERE + COLUMN_ADDRESS_ID + EQUAL + "\"" + id + "\"" + SEMI_COLON;
         Cursor c = getReadableDatabase().rawQuery(q, null);
-        c.moveToFirst();
-        return c.getString(0);
+        if (c.getCount() > 0) {
+            c.moveToFirst();
+            return c.getString(0);
+        }
+        return null;
     }
 
     public void deleteAddress(String id) {
@@ -147,12 +152,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<Integer> get10LastCOValue( int repID) {
+    public void deleteReports(String id) {
+        String q = DELETE + FROM + REPORT_TABLE + WHERE + COLUMN_REPORT_ID + EQUAL + "\"" + id + "\"" + SEMI_COLON;
+        getWritableDatabase().execSQL(q);
+    }
 
+    public ArrayList<Integer> getLastCOValues(String repID, int count) {
 //        select * from (select * from tblmessage where reportId = repID order by time desc limit 10) order by time asc ;
-
         String q = SELECT + STAR + FROM + PARENTHESIS_OPEN + SELECT + STAR + FROM + REPORT_TABLE + WHERE + COLUMN_REPORT_ID + EQUAL
-                + "\"" + repID + "\"" + ORDER_BY + COLUMN_TIME + DESC + LIMIT + "10 " + PARENTHESIS_CLOSE + ORDER_BY
+                + "\"" + repID + "\"" + ORDER_BY + COLUMN_TIME + DESC + LIMIT + count + PARENTHESIS_CLOSE + ORDER_BY
                 + COLUMN_TIME + ASC + SEMI_COLON;
         Cursor c = getReadableDatabase().rawQuery(q, null);
         c.moveToFirst();
@@ -165,10 +173,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<Integer> get10LastSmokeValue(int repID) {
+    public ArrayList<Integer> getLastSmokeValues(String repID, int count) {
 
         String q = SELECT + STAR + FROM + PARENTHESIS_OPEN + SELECT + STAR + FROM + REPORT_TABLE + WHERE + COLUMN_REPORT_ID + EQUAL
-                + "\"" + repID + "\"" + ORDER_BY + COLUMN_TIME + DESC + LIMIT + "10 " + PARENTHESIS_CLOSE + ORDER_BY
+                + "\"" + repID + "\"" + ORDER_BY + COLUMN_TIME + DESC + LIMIT + count + PARENTHESIS_CLOSE + ORDER_BY
                 + COLUMN_TIME + ASC + SEMI_COLON;
         Cursor c = getReadableDatabase().rawQuery(q, null);
         c.moveToFirst();
@@ -179,5 +187,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         return a;
     }
+
 
 }

@@ -1,6 +1,7 @@
 package com.example.arezoo.firealarm;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,18 +13,38 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.util.ArrayList;
+
 /**
  * Created by Arezoo on 06-Oct-18.
  */
 
 public class ReportActivity extends AppCompatActivity {
+    private static final String TAG = "ReportActivity";
     DataBaseHelper myDbHelper;
+    String addressID;
+    GraphView graph1;
+    GraphView graph2;
+    private LineGraphSeries<DataPoint> coSeries;
+    private LineGraphSeries<DataPoint> smokeSeries;
+
+
+    Runnable updateGraphrunnable = new Runnable() {
+        @Override
+        public void run() {
+            updateGraphs();
+        }
+    };
+    Handler handler = new Handler();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
+        myDbHelper = DataBaseHelper.getInstance(this);
+        addressID = getIntent().getStringExtra("addressID");
 
-        Button ok_button = (Button)findViewById(R.id.ok_button_report);
+        Button ok_button = (Button) findViewById(R.id.ok_button_report);
         ok_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -31,27 +52,59 @@ public class ReportActivity extends AppCompatActivity {
             }
         });
 
-        myDbHelper = new DataBaseHelper(this, "dbHelper", null, 1);
-        Log.d("ReportActivity", "is:" + myDbHelper.get10LastCOValue(12));
+        graph1 = (GraphView) findViewById(R.id.graph1);
+        graph2 = (GraphView) findViewById(R.id.graph2);
 
-        GraphView graph1 = (GraphView) findViewById(R.id.graph1);
-        LineGraphSeries<DataPoint> series1 = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, 150),
-                new DataPoint(1, 160),
-                new DataPoint(2, 176),
-                new DataPoint(3, 175),
-                new DataPoint(4, 200)
-        });
-        graph1.addSeries(series1);
+        graph1.getViewport().setMinX(0);
+        graph1.getViewport().setMaxX(100);
+        graph1.getViewport().setMinY(0);
+        graph1.getViewport().setMaxY(500);
+        graph1.getViewport().setYAxisBoundsManual(true);
+        graph1.getViewport().setXAxisBoundsManual(true);
 
-        GraphView graph2 = (GraphView) findViewById(R.id.graph2);
-        LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 6)
-        });
-        graph2.addSeries(series2);
+        graph2.getViewport().setMinX(0);
+        graph2.getViewport().setMaxX(100);
+        graph2.getViewport().setMinY(0);
+        graph2.getViewport().setMaxY(500);
+        graph2.getViewport().setYAxisBoundsManual(true);
+        graph2.getViewport().setXAxisBoundsManual(true);
+
+
+        updateGraphs();
+    }
+
+    public void updateGraphs() {
+        Log.d(TAG, "updateGraphs: ");
+        ArrayList<Integer> coArrayList = myDbHelper.getLastCOValues(addressID, 100);
+        Log.d(TAG, "updateGraphs: coArraList=" + coArrayList);
+        Log.d(TAG, "updateGraphs: coSeries=" + coSeries + " smokeSeries=" + smokeSeries);
+        DataPoint[] coDataPoints = new DataPoint[coArrayList.size()];
+        for (int i = 0; i < coArrayList.size(); i++) {
+            coDataPoints[i] = new DataPoint(i, coArrayList.get(i));
+        }
+        if (coSeries == null) {
+            coSeries = new LineGraphSeries<>();
+            graph1.addSeries(coSeries);
+        }
+        coSeries.resetData(coDataPoints);
+
+        ArrayList<Integer> smokeArrayList = myDbHelper.getLastSmokeValues(addressID, 100);
+        DataPoint[] smokeDataPoints = new DataPoint[smokeArrayList.size()];
+        for (int i = 0; i < smokeArrayList.size(); i++) {
+            smokeDataPoints[i] = new DataPoint(i, smokeArrayList.get(i));
+        }
+        if (smokeSeries == null) {
+            smokeSeries = new LineGraphSeries<>();
+            graph2.addSeries(smokeSeries);
+        }
+        smokeSeries.resetData(smokeDataPoints);
+
+        handler.postDelayed(updateGraphrunnable, 1000);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(updateGraphrunnable);
     }
 }

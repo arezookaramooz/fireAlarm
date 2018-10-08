@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     View contentView;
     Dialog d;
     int check;
+    boolean isAlerting = false;
 
     private RecyclerView recyclerView;
     private Button add_button;
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         String extera =  intent.getStringExtra("pushData");
         if(extera != null){
             fireDetected(intent);
+            isAlerting = true;
         }
         Log.d("message","extera is:" + extera);
     }
@@ -90,43 +92,47 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fireDetected(Intent intent) {
-        db = new DataBaseHelper(MainActivity.this, "myDatabase", null, 1);
+        if (!isAlerting){
 
-        int id = intent.getIntExtra("firedId", 0);
+            db = DataBaseHelper.getInstance(this);
 
-        String fired_id = "" + id;
+            int id = intent.getIntExtra("firedId", 0);
 
-        d = new Dialog(MainActivity.this);
-        contentView = LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_fire_detected, null, false);
-        d.setContentView(contentView);
+            String fired_id = "" + id;
 
-        TextView t = (TextView) contentView.findViewById(R.id.fired_address);
-        t.setText(db.getAddress(fired_id));
+            d = new Dialog(MainActivity.this);
+            contentView = LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_fire_detected, null, false);
+            d.setContentView(contentView);
 
-        Button ok_button = (Button) contentView.findViewById(R.id.ok_button);
-        ok_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mMediaPlayer.stop();
-                mMediaPlayer.release();
-                d.dismiss();
-            }
-        });
+            TextView t = (TextView) contentView.findViewById(R.id.fired_address);
+            t.setText(db.getAddress(fired_id));
 
-        d.show();
+            Button ok_button = (Button) contentView.findViewById(R.id.ok_button);
+            ok_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mMediaPlayer.stop();
+                    mMediaPlayer.release();
+                    d.dismiss();
+                }
+            });
 
-        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        check = prefs.getInt("checkedSound", 0);
-        if (check == 1)
-            mMediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.sound1);
-        else if (check == 2)
-            mMediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.sound2);
-        else if (check == 3)
-            mMediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.sound3);
+            d.show();
 
-        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mMediaPlayer.setLooping(true);
-        mMediaPlayer.start();
+            SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+            check = prefs.getInt("checkedSound", 1);
+            if (check == 1)
+                mMediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.sound1);
+            else if (check == 2)
+                mMediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.sound2);
+            else if (check == 3)
+                mMediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.sound3);
+
+            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mMediaPlayer.setLooping(true);
+            mMediaPlayer.start();
+
+        }
     }
 
     private void createNewAddress() {
