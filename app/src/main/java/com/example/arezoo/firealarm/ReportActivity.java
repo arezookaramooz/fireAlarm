@@ -29,14 +29,17 @@ public class ReportActivity extends AppCompatActivity {
     private LineGraphSeries<DataPoint> coSeries;
     private LineGraphSeries<DataPoint> smokeSeries;
     public static final String MY_PREFS_NAME = "MyPrefsFile";
+
     int co_min_x;
     int co_max_x;
     int co_min_y;
     int co_max_y;
+
     int smoke_min_x;
     int smoke_max_x;
     int smoke_min_y;
     int smoke_max_y;
+
 
     Runnable updateGraphrunnable = new Runnable() {
         @Override
@@ -65,10 +68,12 @@ public class ReportActivity extends AppCompatActivity {
         graph2 = (GraphView) findViewById(R.id.graph2);
 
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+
         co_min_x = prefs.getInt("co_min_x", 0);
         co_max_x = prefs.getInt("co_max_x", 100);
         co_min_y = prefs.getInt("co_min_y", 100);
         co_max_y = prefs.getInt("co_max_y", 300);
+
         smoke_min_x = prefs.getInt("smoke_min_x", 0);
         smoke_max_x = prefs.getInt("smoke_max_x", 100);
         smoke_min_y = prefs.getInt("smoke_min_y", 100);
@@ -94,7 +99,8 @@ public class ReportActivity extends AppCompatActivity {
 
     public void updateGraphs() {
         Log.d(TAG, "updateGraphs: ");
-        ArrayList<Integer> coArrayList = myDbHelper.getLastCOValues(addressID, 100);
+        int n1 = co_max_x - co_min_x;
+        ArrayList<Integer> coArrayList = myDbHelper.getLastCOValues(addressID, n1);
         Log.d(TAG, "updateGraphs: coArraList=" + coArrayList);
         Log.d(TAG, "updateGraphs: coSeries=" + coSeries + " smokeSeries=" + smokeSeries);
         DataPoint[] coDataPoints = new DataPoint[coArrayList.size()];
@@ -107,7 +113,8 @@ public class ReportActivity extends AppCompatActivity {
         }
         coSeries.resetData(coDataPoints);
 
-        ArrayList<Integer> smokeArrayList = myDbHelper.getLastSmokeValues(addressID, 100);
+        int n2 = smoke_max_x - smoke_min_x;
+        ArrayList<Integer> smokeArrayList = myDbHelper.getLastSmokeValues(addressID, n2);
         DataPoint[] smokeDataPoints = new DataPoint[smokeArrayList.size()];
         for (int i = 0; i < smokeArrayList.size(); i++) {
             smokeDataPoints[i] = new DataPoint(i, smokeArrayList.get(i));
