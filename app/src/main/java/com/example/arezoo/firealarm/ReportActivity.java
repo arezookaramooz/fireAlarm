@@ -1,5 +1,6 @@
 package com.example.arezoo.firealarm;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -27,7 +28,15 @@ public class ReportActivity extends AppCompatActivity {
     GraphView graph2;
     private LineGraphSeries<DataPoint> coSeries;
     private LineGraphSeries<DataPoint> smokeSeries;
-
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
+    int co_min_x;
+    int co_max_x;
+    int co_min_y;
+    int co_max_y;
+    int smoke_min_x;
+    int smoke_max_x;
+    int smoke_min_y;
+    int smoke_max_y;
 
     Runnable updateGraphrunnable = new Runnable() {
         @Override
@@ -55,17 +64,27 @@ public class ReportActivity extends AppCompatActivity {
         graph1 = (GraphView) findViewById(R.id.graph1);
         graph2 = (GraphView) findViewById(R.id.graph2);
 
-        graph1.getViewport().setMinX(0);
-        graph1.getViewport().setMaxX(100);
-        graph1.getViewport().setMinY(0);
-        graph1.getViewport().setMaxY(500);
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        co_min_x = prefs.getInt("co_min_x", 0);
+        co_max_x = prefs.getInt("co_max_x", 100);
+        co_min_y = prefs.getInt("co_min_y", 100);
+        co_max_y = prefs.getInt("co_max_y", 300);
+        smoke_min_x = prefs.getInt("smoke_min_x", 0);
+        smoke_max_x = prefs.getInt("smoke_max_x", 100);
+        smoke_min_y = prefs.getInt("smoke_min_y", 100);
+        smoke_max_y = prefs.getInt("smoke_max_y", 300);
+
+        graph1.getViewport().setMinX(co_min_x);
+        graph1.getViewport().setMaxX(co_max_x);
+        graph1.getViewport().setMinY(co_min_y);
+        graph1.getViewport().setMaxY(co_max_y);
         graph1.getViewport().setYAxisBoundsManual(true);
         graph1.getViewport().setXAxisBoundsManual(true);
 
-        graph2.getViewport().setMinX(0);
-        graph2.getViewport().setMaxX(100);
-        graph2.getViewport().setMinY(0);
-        graph2.getViewport().setMaxY(500);
+        graph2.getViewport().setMinX(smoke_min_x);
+        graph2.getViewport().setMaxX(smoke_max_x);
+        graph2.getViewport().setMinY(smoke_min_y);
+        graph2.getViewport().setMaxY(smoke_max_y);
         graph2.getViewport().setYAxisBoundsManual(true);
         graph2.getViewport().setXAxisBoundsManual(true);
 

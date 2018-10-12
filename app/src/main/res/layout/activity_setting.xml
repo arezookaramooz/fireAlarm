@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
         android:text="choose the alarm sound:"
-        android:textSize="20dp"
-        android:layout_margin="20dp"/>
+        android:textSize="20dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,28 +28,29 @@
                 android:id="@+id/radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical">
-            <RadioButton
-                android:id="@+id/radio_button_alarm1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="alarm1" />
 
-            <RadioButton
-                android:id="@+id/radio_button_alarm2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="alarm2" />
+                <RadioButton
+                    android:id="@+id/radio_button_alarm1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="alarm1" />
 
-            <RadioButton
-                android:id="@+id/radio_button_alarm3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="alarm3" />
+                <RadioButton
+                    android:id="@+id/radio_button_alarm2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="alarm2" />
+
+                <RadioButton
+                    android:id="@+id/radio_button_alarm3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="alarm3" />
             </RadioGroup>
 
         </LinearLayout>
@@ -56,8 +59,8 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginTop="20dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <LinearLayout
@@ -66,19 +69,22 @@
                 android:orientation="horizontal">
 
 
-
                 <ImageButton
                     android:id="@+id/image_button_play1"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_margin="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/play" />
 
                 <ImageButton
                     android:id="@+id/image_button_stop1"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_margin="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/stop" />
 
             </LinearLayout>
@@ -87,7 +93,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
 
 
                 <ImageButton
@@ -112,7 +117,6 @@
                 android:orientation="horizontal">
 
 
-
                 <ImageButton
                     android:id="@+id/image_button_play3"
                     android:layout_width="30dp"
@@ -135,12 +139,198 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#161515"></LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tex_view_CO_threshold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:text="Enter CO threshold:"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/edit_text_CO_threshold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="250"
+            android:textSize="20dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tex_view_smoke_threshold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="Enter smoke threshold:"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/edit_text_smoke_threshold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="250"
+            android:textSize="20dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#161515"></LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="enter the CO graph parameters:"
+        android:textSize="20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Min X:" />
+
+        <EditText
+            android:id="@+id/edit_text_co_min_x"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Max X:" />
+
+        <EditText
+            android:id="@+id/edit_text_co_max_x"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Min Y:" />
+
+        <EditText
+            android:id="@+id/edit_text_co_min_y"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Max Y:" />
+
+        <EditText
+            android:id="@+id/edit_text_co_max_y"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#161515"></LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="enter the smoke graph parameters:"
+        android:textSize="20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Min X:" />
+
+        <EditText
+            android:id="@+id/edit_text_smoke_min_x"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Max X:" />
+
+        <EditText
+            android:id="@+id/edit_text_smoke_max_x"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Min Y:" />
+
+        <EditText
+            android:id="@+id/edit_text_smoke_min_y"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Max Y:" />
+
+        <EditText
+            android:id="@+id/edit_text_smoke_max_y"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="bottom">
+        android:gravity="bottom"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -153,7 +343,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="abort"
-                android:textSize="25sp"/>
+                android:textSize="25sp" />
 
             <Button
                 android:id="@+id/save_sound_button"
@@ -161,12 +351,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="save"
-                android:textSize="25sp"/>
+                android:textSize="25sp" />
 
         </LinearLayout>
 
+
     </LinearLayout>
-
-
 
 </LinearLayout>

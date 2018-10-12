@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.admin.SystemUpdatePolicy;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -24,6 +25,9 @@ import rest.bef.BefrestPushReceiver;
 public class PushReceiver extends BefrestPushReceiver {
     private static final String TAG = "PushReceiver";
     DataBaseHelper dbHelper;
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
+    int co_threshold;
+    int smoke_threshold;
 
     @Override
     public void onPushReceived(Context context, BefrestMessage[] messages) {
@@ -31,6 +35,12 @@ public class PushReceiver extends BefrestPushReceiver {
         int firedID = 0;
         int firedIndex = 0;
         dbHelper = DataBaseHelper.getInstance(context);
+        SharedPreferences prefs1 = context.getSharedPreferences(MY_PREFS_NAME, context.MODE_PRIVATE);
+         co_threshold = prefs1.getInt("co_threshold", 250);
+
+        SharedPreferences prefs2 = context.getSharedPreferences(MY_PREFS_NAME, context.MODE_PRIVATE);
+        smoke_threshold = prefs2.getInt("smoke_threshold", 250);
+
         for (int i = 0; i < messages.length; i++) {
             Log.d(TAG, "push is:" + messages[i].getData());
             int id = 0;
@@ -50,7 +60,7 @@ public class PushReceiver extends BefrestPushReceiver {
 
             if (dbHelper.getAddress("" + id) != null) {
                 dbHelper.insertRowToReport(time, id, co, smoke);
-                if (co > 250 && smoke > 250) {
+                if (co > co_threshold && smoke > smoke_threshold) {
                     fireDetected = true;
                     firedID = id;
                     firedIndex = i;

@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -38,6 +39,30 @@ public class SettingActivity extends AppCompatActivity {
     MediaPlayer mediaPlayer3;
     int check;
 
+    EditText editText_co_threshold;
+    EditText editText_co_min_x;
+    EditText editText_co_max_x;
+    EditText editText_co_min_y;
+    EditText editText_co_max_y;
+
+    EditText editText_smoke_threshold;
+    EditText editText_smoke_min_x;
+    EditText editText_smoke_max_x;
+    EditText editText_smoke_min_y;
+    EditText editText_smoke_max_y;
+
+    int co_threshold;
+    int co_min_x;
+    int co_max_x;
+    int co_min_y;
+    int co_max_y;
+
+    int smoke_threshold;
+    int smoke_min_x;
+    int smoke_max_x;
+    int smoke_min_y;
+    int smoke_max_y;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,8 +79,23 @@ public class SettingActivity extends AppCompatActivity {
         stop1 = (ImageButton) findViewById(R.id.image_button_stop1);
         stop2 = (ImageButton) findViewById(R.id.image_button_stop2);
         stop3 = (ImageButton) findViewById(R.id.image_button_stop3);
+
         saveSoundButton = (Button) findViewById(R.id.save_sound_button);
         abortSoundButton = (Button) findViewById(R.id.abort_sound_button);
+
+        editText_co_threshold = (EditText)findViewById(R.id.edit_text_CO_threshold);
+        editText_co_min_x = (EditText)findViewById(R.id.edit_text_co_min_x);
+        editText_co_max_x = (EditText)findViewById(R.id.edit_text_co_max_x);
+        editText_co_min_y = (EditText)findViewById(R.id.edit_text_co_min_y);
+        editText_co_max_y = (EditText)findViewById(R.id.edit_text_co_max_y);
+
+        editText_smoke_threshold = (EditText)findViewById(R.id.edit_text_smoke_threshold);
+        editText_smoke_min_x = (EditText)findViewById(R.id.edit_text_smoke_min_x);
+        editText_smoke_max_x = (EditText)findViewById(R.id.edit_text_smoke_max_x);
+        editText_smoke_min_y = (EditText)findViewById(R.id.edit_text_smoke_min_y);
+        editText_smoke_max_y = (EditText)findViewById(R.id.edit_text_smoke_max_y);
+
+
 
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         check = prefs.getInt("checkedSound", 0);//"No name defined" is the default value
@@ -137,8 +177,52 @@ public class SettingActivity extends AppCompatActivity {
                     checkedSound = 2;
                 else if (radioGroup.getCheckedRadioButtonId() == R.id.radio_button_alarm3)
                     checkedSound = 3;
+
+                String value1 = editText_co_threshold.getText().toString();
+                co_threshold = Integer.parseInt(value1);
+
+                String value2 = editText_co_min_x.getText().toString();
+                co_min_x = Integer.parseInt(value2);
+
+                String value3 = editText_co_max_x.getText().toString();
+                co_max_x = Integer.parseInt(value3);
+
+                String value4 = editText_co_min_y.getText().toString();
+                co_min_y = Integer.parseInt(value4);
+
+                String value5 = editText_co_max_y.getText().toString();
+                co_max_y = Integer.parseInt(value5);
+
+                String value6 = editText_smoke_threshold.getText().toString();
+                smoke_threshold = Integer.parseInt(value6);
+
+                String value7 = editText_smoke_min_x.getText().toString();
+                smoke_min_x = Integer.parseInt(value7);
+
+                String value8 = editText_smoke_max_x.getText().toString();
+                smoke_max_x = Integer.parseInt(value8);
+
+                String value9 = editText_smoke_min_y.getText().toString();
+                smoke_min_y = Integer.parseInt(value9);
+
+                String value10 = editText_smoke_max_y.getText().toString();
+                smoke_max_y = Integer.parseInt(value10);
+
+
+
                 SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                 editor.putInt("checkedSound", checkedSound);
+                editor.putInt("co_threshold", co_threshold);
+                editor.putInt("co_min_x", co_min_x);
+                editor.putInt("co_max_x", co_max_x);
+                editor.putInt("co_min_y", co_min_y);
+                editor.putInt("co_max_y", co_max_y);
+
+                editor.putInt("smoke_threshold", smoke_threshold);
+                editor.putInt("smoke_min_x", smoke_min_x);
+                editor.putInt("smoke_max_x", smoke_max_x);
+                editor.putInt("smoke_min_y", smoke_min_y);
+                editor.putInt("smoke_max_y", smoke_max_y);
                 editor.apply();
                 finish();
 
