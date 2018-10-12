@@ -95,9 +95,20 @@ public class SettingActivity extends AppCompatActivity {
         editText_smoke_min_y = (EditText)findViewById(R.id.edit_text_smoke_min_y);
         editText_smoke_max_y = (EditText)findViewById(R.id.edit_text_smoke_max_y);
 
-
-
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+
+        editText_co_threshold.setText(Integer.toString(prefs.getInt("co_threshold",250)));
+        editText_co_min_x.setText(Integer.toString(prefs.getInt("co_min_x", 0)));
+        editText_co_max_x.setText(Integer.toString(prefs.getInt("co_max_x", 100)));
+        editText_co_min_y.setText(Integer.toString(prefs.getInt("co_min_y", 100)));
+        editText_co_max_y.setText(Integer.toString(prefs.getInt("co_max_y", 400)));
+
+        editText_smoke_threshold.setText(Integer.toString(prefs.getInt("smoke_threshold",250)));
+        editText_smoke_min_x.setText(Integer.toString(prefs.getInt("smoke_min_x", 0)));
+        editText_smoke_max_x.setText(Integer.toString(prefs.getInt("smoke_max_x", 100)));
+        editText_smoke_min_y.setText(Integer.toString(prefs.getInt("smoke_min_y", 100)));
+        editText_smoke_max_y.setText(Integer.toString(prefs.getInt("smoke_max_y", 400)));
+
         check = prefs.getInt("checkedSound", 0);//"No name defined" is the default value
 
         if (check == 1)
